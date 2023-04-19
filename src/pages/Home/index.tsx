@@ -1,6 +1,8 @@
-import { AdvantagesContainer, CoffeesContainer, ContentContainer, HomeContainer, TextContentContainer } from "./styles";
+import { AdvantagesContainer, CoffeesContainer, ContentContainer, HomeContainer, OurCoffesContainer, TextContentContainer } from "./styles";
 import CoffeeIllustration from '../../assets/coffee-illustration.png'
 import { Timer, ShoppingCart, Package, Coffee } from 'phosphor-react';
+import { CoffeeCard } from "./components/CoffeeCard";
+import { coffees } from "../../components/coffees";
 
 export function Home() {
     return (
@@ -30,9 +32,15 @@ export function Home() {
                 </TextContentContainer>
                 <img src={CoffeeIllustration} alt="" />
             </ContentContainer>
-            <CoffeesContainer>
+            
+            <OurCoffesContainer>
                 <h3>Nossos cafés</h3>
-            </CoffeesContainer>
+                <CoffeesContainer>
+                    {coffees.map((coffee) => (
+                        <CoffeeCard coffeeData={coffee}/>
+                    ))}
+                </CoffeesContainer>
+            </OurCoffesContainer>
         </HomeContainer>
     )
 }
