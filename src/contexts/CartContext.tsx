@@ -62,8 +62,6 @@ export function CartContextProvider({
         );
 
         return sumWithInitial;
-
-        console.log(sumWithInitial);
     } 
 
     function decreaseQuantityById(itemId: string){
