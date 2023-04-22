@@ -9,7 +9,8 @@ export const CoffeeCardContainer = styled.div`
     height: 20rem;
     
     border-radius: 0.375rem 2.25rem 0.375rem 2.25rem;
-    margin-top: 2.75rem;
+    margin-top: 1.75rem;
+    margin-bottom: 1rem;
 
     background-color: ${(props) => props.theme['base-card']};
 
@@ -20,22 +21,27 @@ export const CoffeeCardContainer = styled.div`
 
     h5{
         font-family: 'Baloo 2', cursive;
-        font-size: 1.25rem;
-        line-height: 130%;
         margin-top: 1.5rem;
         color: ${(props) => props.theme['base-subtitle']};
     }
 `;
 
 export const Description = styled.div`
-    color: ${(props) => props.theme['base-label']};
     font-size: 0.875rem;
     text-align: center;
     max-width: 13.5rem;
     margin-top: 0.3rem;
+
+    color: ${(props) => props.theme['base-label']};
 `;
 
 export const TagsContainer = styled.div`
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 1rem;
+    
     span {
         font-size: 0.625rem;
         font-weight: bold;
@@ -44,20 +50,15 @@ export const TagsContainer = styled.div`
         padding: 0.25rem 0.5rem;
         border-radius: 8px;
     }
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    margin-top: 1rem;
 `;
 
 export const FooterContainer = styled.div`
     display: flex;
+    gap: 1rem;
     align-items: center;
     justify-content: space-between;
     margin-top: 2rem;
     max-width: 13.5rem;
-    gap: 1rem;
 `;
 
 export const PriceContainer = styled.div`
@@ -69,9 +70,11 @@ export const PriceContainer = styled.div`
 `;
 
 export const SelectToCartContainer = styled.div`
-    background-color: ${(props) => props.theme['base-button']};
     padding: 0.4rem 0.1rem 0.4rem 0.1rem;
     border-radius: 8px;
+
+    background-color: ${(props) => props.theme['base-button']};
+
     span {
         padding: 0.5rem;
         cursor: pointer;
@@ -82,7 +85,8 @@ export const SelectToCartContainer = styled.div`
 
 export const ButtonAddToCart = styled.button`
 
-border: 0;
+    border: 0;
+    
     span{
         width: 2rem;
         height: 2rem;

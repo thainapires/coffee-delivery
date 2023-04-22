@@ -20,6 +20,7 @@ interface CartContextType {
     increaseQuantityById (itemId: string): void;
     decreaseQuantityById (itemId: string): void;
     removeItemFromCart(itemId: string): void;
+    calculateOrderTotal(): number;
 }
 
 export const CartContext = createContext({} as CartContextType)
@@ -52,6 +53,18 @@ export function CartContextProvider({
 
         setTotalQuantityOfItems(totalQuantityOfItems + 1)
     }
+
+    function calculateOrderTotal(){
+        const initialValue = 0;
+        const sumWithInitial = cart.reduce(
+            (accumulator, currentValue) => currentValue.priceInCents + accumulator,
+            initialValue
+        );
+
+        return sumWithInitial;
+
+        console.log(sumWithInitial);
+    } 
 
     function decreaseQuantityById(itemId: string){
         setCart((prevState) => {
@@ -109,7 +122,8 @@ export function CartContextProvider({
                 totalQuantityOfItems, 
                 increaseQuantityById, 
                 decreaseQuantityById,
-                removeItemFromCart
+                removeItemFromCart,
+                calculateOrderTotal
             }
         }>
           {children}

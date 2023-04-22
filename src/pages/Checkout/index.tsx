@@ -1,12 +1,25 @@
 import { useContext, useState } from "react";
-import { AddressInfo, ButtonGroup, ContentSelectCoffees, InputsContainer, MainContainer, OrderInformationContainer, PaymentInfo, PlaceOrderContainer, SelectedCoffeesContainer } from "./styles";
+import { AddressInfo, ContentSelectCoffees, InputsContainer, MainContainer, OrderInformationContainer, PaymentInfo, PlaceOrderContainer, SelectedCoffeesContainer } from "./styles";
 import { MapPinLine, CurrencyDollar, Bank, CreditCard, Money } from 'phosphor-react';
 import { CartContext } from "../../contexts/CartContext";
 import { CoffeeCardCheckout } from "./CoffeeCardCheckout";
 
 export function Checkout() {
 
-    const { cart, totalQuantityOfItems } = useContext(CartContext)
+    const { cart, totalQuantityOfItems, calculateOrderTotal } = useContext(CartContext)
+
+    const [paymentMethodCreditCard, setPaymentMethodCreditCard ] = useState(false); 
+    const [paymentMethodDebitCard, setPaymentMethodDebitCard ] = useState(false); 
+    const [paymentMethodMoney, setPaymentMethodMoney ] = useState(false); 
+
+    function handleClickCreditCard(){
+        setPaymentMethodCreditCard(!paymentMethodCreditCard);
+    }
+
+    const priceInReal = new Intl.NumberFormat("pt-BR", {
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 2,
+    }).format(calculateOrderTotal() / 100);
 
     return (
         <MainContainer>
@@ -39,8 +52,8 @@ export function Checkout() {
                             <p>O pagamento é feito na entrega. Escolha a forma que deseja pagar</p>
                         </div>
                     </div>
-            </PaymentInfo>
-        </OrderInformationContainer>
+                </PaymentInfo>
+            </OrderInformationContainer>
             <SelectedCoffeesContainer>
                 <h5>Cafés selecionados</h5>
                 <ContentSelectCoffees>
@@ -52,15 +65,15 @@ export function Checkout() {
                     <PlaceOrderContainer>
                         <div>
                             <p>Total de itens</p>
-                            <span>R$29,70</span>
+                            <span>{priceInReal}</span>
                         </div>
                         <div>
                             <p>Entrega</p>
-                            <span>R$3,50</span>
+                            <span>R$0,00</span>
                         </div>
                         <div>
                             <strong>Total</strong>
-                            <strong>R$33,20</strong>
+                            <strong>{priceInReal}</strong>
                         </div>
                         <button type="button">CONFIRMAR PEDIDO</button>
                     </PlaceOrderContainer>
