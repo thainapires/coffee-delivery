@@ -5,14 +5,14 @@ import { CartContext } from "../../../contexts/CartContext";
 
 export function CoffeeCardCheckout(props: any) {
 
-    const { removeItemFromCart, increaseQuantityById, decreaseQuantityById } = useContext(CartContext)
+    const { removeItemFromCart, changeQuantityOfItemById } = useContext(CartContext)
     
     function increaseValue(id: string){
-        increaseQuantityById(id)
+        changeQuantityOfItemById(id, "increase")
     }
 
     function decreaseValue(id: string){
-        decreaseQuantityById(id)
+        changeQuantityOfItemById(id, "decrease")
     }
 
     function handleRemoveItemFromCart(id: string){

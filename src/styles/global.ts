@@ -5,12 +5,13 @@ export const GlobalStyle = createGlobalStyle`
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        outline: none;
     }
 
     body {
-        font-family: 'Roboto', sans-serif;
-        font-weight: 400;
-        font-size: 1rem;
+        background: ${(props) => props.theme.background};
+        color: ${(props) => props.theme['base-text']};
+        -webkit-font-smoothing: antialiased;
 
         h1{
             font-family: 'Baloo 2', cursive;
@@ -44,5 +45,19 @@ export const GlobalStyle = createGlobalStyle`
             font-size: 2rem;
         }
 
+    }
+
+    body, input, textarea, button {
+        font-family: ${(props) => props.theme.fonts.regular};
+        font-weight: 400;
+        font-size: ${(props) => props.theme.textSizes['text-regular-m']};
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    a {
+        text-decoration: none;
     }
 `

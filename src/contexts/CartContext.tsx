@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useReducer, useState } from "react"
+import { ReactNode, createContext, useEffect, useReducer, useState } from "react"
+import { produce } from "immer";
 
 export interface Coffee {
     id: string;
@@ -16,10 +17,11 @@ interface CartItem extends Coffee{
 interface CartContextType {
     cart: CartItem[];
     totalQuantityOfItems: number;
-    addItensToCart: (data: Coffee, quantity: number) => void;
-    increaseQuantityById (itemId: string): void;
-    decreaseQuantityById (itemId: string): void;
+    addToCart: (data: Coffee, quantity: number) => void;
+    changeQuantityOfItemById (itemId: string, type: "increase" | "decrease"): void;
     removeItemFromCart(itemId: string): void;
+    totalOfOrder: number;
+
     calculateOrderTotal(): number;
 }
 
@@ -34,26 +36,65 @@ export function CartContextProvider({
 }: CartContextProviderProps) {
 
     const [cart, setCart] = useState<CartItem[]>([])
-    const [totalQuantityOfItems, setTotalQuantityOfItems] = useState(0)
+    const totalQuantityOfItems = cart.length;
 
-    function increaseQuantityById(itemId: string){
-        setCart((prevState) => {
-            const indexCoffeeSelected = cart.findIndex(
-                ({id}) => id === itemId
-            );
-      
-            const newShoppingCartItems: CartItem[] = [
-              ...JSON.parse(JSON.stringify(prevState)),
-            ];
+    function addToCart(data: Coffee, quantity: number){
+        const checkCoffeeInCart = cart.findIndex(
+            (cartItem) => cartItem.id === data.id
+        );
 
-            newShoppingCartItems[indexCoffeeSelected].quantity += 1;
-      
-            return newShoppingCartItems;
-        });
+        const newCartItem: CartItem = {
+            id: data.id,
+            title: data.title,
+            image: data.image,
+            tags: data.tags,
+            description: data.description,
+            priceInCents: data.priceInCents,
+            quantity: quantity,
+        }
 
-        setTotalQuantityOfItems(totalQuantityOfItems + 1)
+        const newCart = produce(cart, (draft) => {
+            if(checkCoffeeInCart < 0) {
+                draft.push(newCartItem);
+            }else{
+                draft[checkCoffeeInCart].quantity += newCartItem.quantity;
+            }
+        })
+
+        setCart(newCart);
     }
 
+    function changeQuantityOfItemById(itemId: string, type: "increase" | "decrease" ){
+        const newCart = produce(cart, (draft) => {
+            const checkCoffeeInCart = cart.findIndex(
+                (cartItem) => cartItem.id === itemId
+            );
+
+            if (checkCoffeeInCart >= 0) {
+                const item = draft[checkCoffeeInCart];
+                draft[checkCoffeeInCart].quantity = 
+                    type === "increase"? item.quantity + 1 : item.quantity - 1;
+            }
+        })
+        setCart(newCart);
+    }
+
+    function removeItemFromCart(itemId: string){
+
+        const newCart = produce(cart, (draft) => {
+            const checkCoffeeInCart = cart.findIndex(
+                (cartItem) => cartItem.id === itemId
+            );
+
+            if(checkCoffeeInCart >= 0) {
+                draft.splice(checkCoffeeInCart, 1);
+            }
+        })
+
+        setCart(newCart);
+    }
+
+    /*TODO: check two above */
     function calculateOrderTotal(){
         const initialValue = 0;
         const sumWithInitial = cart.reduce(
@@ -64,64 +105,20 @@ export function CartContextProvider({
         return sumWithInitial;
     } 
 
-    function decreaseQuantityById(itemId: string){
-        setCart((prevState) => {
-            const indexCoffeeSelected = cart.findIndex(
-                ({id}) => id === itemId
-            );
-      
-            const newShoppingCartItems: CartItem[] = [
-              ...JSON.parse(JSON.stringify(prevState)),
-            ];
-
-            newShoppingCartItems[indexCoffeeSelected].quantity -= 1;
-      
-            return newShoppingCartItems;
-        });
-
-        setTotalQuantityOfItems(totalQuantityOfItems - 1)
-    }
-
-    function addItensToCart(data: Coffee, quantity: number){
-        const newCartItem: CartItem = {
-            id: data.id,
-            title: data.title,
-            image: data.image,
-            tags: data.tags,
-            description: data.description,
-            priceInCents: data.priceInCents,
-            quantity: quantity,
-        }
-        setCart((state) => [...state, newCartItem])
-        setTotalQuantityOfItems(totalQuantityOfItems + quantity)
-    }
-
-    function removeItemFromCart(itemId: string){
-
-        const indexCoffeeSelected = cart.findIndex(
-            ({id}) => id === itemId
-        );
-
-        const quantity = cart[indexCoffeeSelected].quantity;
-
-        setCart((prevState) => {
-            const newCartItems = prevState.filter((coffee) => coffee.id !== itemId)
-            return newCartItems;
-        })
-        setTotalQuantityOfItems(totalQuantityOfItems - quantity)
-
-    }
+    const totalOfOrder = cart.reduce((total, cartItem) => {
+        return total + (cartItem.priceInCents * cartItem.quantity);
+    }, 0);
 
     return (
         <CartContext.Provider value={
             { 
-                addItensToCart, 
+                addToCart, 
                 cart, 
                 totalQuantityOfItems, 
-                increaseQuantityById, 
-                decreaseQuantityById,
+                changeQuantityOfItemById, 
                 removeItemFromCart,
-                calculateOrderTotal
+                calculateOrderTotal,
+                totalOfOrder
             }
         }>
           {children}

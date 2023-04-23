@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AddressInfo, ContentSelectCoffees, InputsContainer, MainContainer, OrderInformationContainer, PaymentInfo, PlaceOrderContainer, SelectedCoffeesContainer } from "./styles";
 import { MapPinLine, CurrencyDollar, Bank, CreditCard, Money } from 'phosphor-react';
 import { CartContext } from "../../contexts/CartContext";
@@ -6,20 +6,7 @@ import { CoffeeCardCheckout } from "./CoffeeCardCheckout";
 
 export function Checkout() {
 
-    const { cart, totalQuantityOfItems, calculateOrderTotal } = useContext(CartContext)
-
-    const [paymentMethodCreditCard, setPaymentMethodCreditCard ] = useState(false); 
-    const [paymentMethodDebitCard, setPaymentMethodDebitCard ] = useState(false); 
-    const [paymentMethodMoney, setPaymentMethodMoney ] = useState(false); 
-
-    function handleClickCreditCard(){
-        setPaymentMethodCreditCard(!paymentMethodCreditCard);
-    }
-
-    const priceInReal = new Intl.NumberFormat("pt-BR", {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2,
-    }).format(calculateOrderTotal() / 100);
+    const { cart, totalQuantityOfItems, totalOfOrder, calculateOrderTotal } = useContext(CartContext)
 
     return (
         <MainContainer>
@@ -65,7 +52,7 @@ export function Checkout() {
                     <PlaceOrderContainer>
                         <div>
                             <p>Total de itens</p>
-                            <span>{priceInReal}</span>
+                            <span>{totalOfOrder}</span>
                         </div>
                         <div>
                             <p>Entrega</p>
@@ -73,7 +60,7 @@ export function Checkout() {
                         </div>
                         <div>
                             <strong>Total</strong>
-                            <strong>{priceInReal}</strong>
+                            <strong>{totalOfOrder}</strong>
                         </div>
                         <button type="button">CONFIRMAR PEDIDO</button>
                     </PlaceOrderContainer>

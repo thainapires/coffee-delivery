@@ -8,7 +8,7 @@ import { CartContext } from '../../../../contexts/CartContext';
 export function CoffeeCard(props: any) {
 
     const [quantity, setQuantity] = useState(0)
-    const { addItensToCart } = useContext(CartContext)
+    const { addToCart } = useContext(CartContext)
 
     const priceInReal = new Intl.NumberFormat("pt-BR", {
         maximumFractionDigits: 2,
@@ -27,7 +27,7 @@ export function CoffeeCard(props: any) {
 
     function handleAddToCart (){
         //toast.success(quantity + ' iten(s) do ' + props.coffeeData.title + " adicionado(s) ao carrinho com sucesso",{ autoClose: 3000 });
-        addItensToCart(props.coffeeData, quantity)
+        addToCart(props.coffeeData, quantity)
         setQuantity(0);
     }
 
