@@ -21,8 +21,8 @@ export function Header(){
                 </LocationContainer>
                 <NavLink to="/checkout" title="Carrinho">
                     <ShoppingCart weight="fill" size={22}/>
-                    <Badge>{totalQuantityOfItems}</Badge>
                 </NavLink>
+                <Badge>{totalQuantityOfItems}</Badge>
             </CartAndLocationContainer>
         </HeaderContainer>
     )

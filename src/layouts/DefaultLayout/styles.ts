@@ -3,9 +3,9 @@ import styled from 'styled-components'
 export const LayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0 5rem;
+  padding: 0 10rem;
 
-  @media (max-width: 480px) {
+  @media (max-width: 720px) {
     padding: 0 2rem;
   }
 `
