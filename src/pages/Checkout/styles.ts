@@ -124,6 +124,35 @@ export const PaymentInfo = styled.div`
             }
         }
     }
+
+    nav{
+        
+        padding-top: 0.5rem;
+        display: flex;
+        gap: 0.75rem;
+        
+        input{ display: none; }
+
+        label{
+            background-color: ${(props) => props.theme['base-button']};
+            font-size: ${(props) => props.theme.textSizes['components-button-s']};
+            width: 11.125rem;
+            border-radius: 4px;
+
+            padding: 1rem 17.5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            
+            :hover{
+                background: ${(props) => props.theme['base-hover']};
+            }
+        }
+        }
+        
+        input:checked + label{
+            background: ${(props) => props.theme['purple-light']};
+        }
+    }
 `;
 
 
