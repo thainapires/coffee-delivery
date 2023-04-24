@@ -22,7 +22,7 @@ export function Header(){
                 <NavLink to="/checkout" title="Carrinho">
                     <ShoppingCart weight="fill" size={22}/>
                 </NavLink>
-                <Badge>{totalQuantityOfItems}</Badge>
+                { totalQuantityOfItems > 0 ? <Badge>{totalQuantityOfItems}</Badge> : ''}
             </CartAndLocationContainer>
         </HeaderContainer>
     )

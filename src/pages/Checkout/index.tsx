@@ -6,6 +6,7 @@ import { CoffeeCardCheckout } from "./CoffeeCardCheckout";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
+import { useNavigate } from 'react-router-dom';
 
 const deliveryPrice = 350;
 
@@ -17,11 +18,14 @@ const orderValidationSchema = zod.object({
     district: zod.string().min(1, "Informe o Bairro"),
     city: zod.string().min(1, "Informe a Cidade"),
     uf: zod.string().length(2, "Informe a UF"),
+    payment: zod.string().min(1),
 })
 
 type NewOrderFormData = zod.infer<typeof orderValidationSchema>
 
 export function Checkout() {
+
+    const navigate = useNavigate()
 
     const { register, handleSubmit, watch, reset } = useForm<NewOrderFormData>({
         resolver: zodResolver(orderValidationSchema),
@@ -35,6 +39,8 @@ export function Checkout() {
     function handleCreateNewOrder(data: any){
         console.log('Handle Submit');
         console.log(data);
+        console.log(cart);
+        navigate('/order-confirmed');
     }
 
     return (
@@ -71,14 +77,14 @@ export function Checkout() {
                             </div>
                         </div>
                         <nav>
-                            <input type="radio" id="x1" name="x"/>
-                            <label htmlFor="x1"><CreditCard/> CARTÃO DE CRÉDITO</label>
+                            <input value="creditCard" type="radio" id="creditCard" {...register("payment")}/>
+                            <label htmlFor="creditCard"><CreditCard/> CARTÃO DE CRÉDITO</label>
                             
-                            <input type="radio" id="x2" name="x"/>
-                            <label htmlFor="x2"><Bank/> CARTÃO DE DÉBITO</label>
+                            <input value="debitCard" type="radio" id="debitCard" {...register("payment")}/>
+                            <label htmlFor="debitCard"><Bank/> CARTÃO DE DÉBITO</label>
                             
-                            <input type="radio" id="x3" name="x"/>
-                            <label htmlFor="x3"><Money/> DINHEIRO</label>
+                            <input value="money" type="radio" id="money" {...register("payment")}/>
+                            <label htmlFor="money"><Money/> DINHEIRO</label>
                         </nav>
                     </PaymentInfo>
                 </OrderInformationContainer>
